@@ -107,10 +107,3 @@ This project is a Django-based backend API that allows document management and a
   - FAQ generation failures
   - Unauthorized access
 
----
-
-## Security Considerations
-- **Use HTTPS** for secure communication.
-- **Restrict Admin Access**: Only authenticated admins can modify documents.
-- **Enhance Authentication**: Consider JWT for improved security.
-
