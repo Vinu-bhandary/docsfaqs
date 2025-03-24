@@ -1,55 +1,116 @@
-# docsfaqs
-To run your Django-Ninja project, follow these steps carefully. Here's a detailed guide from setting up the project to testing it.
+# Document FAQ Generator
 
-1. Navigate to Your Project Directory
-Ensure you're in the correct project directory containing manage.py.
+## Overview
+This project is a Django-based backend API that allows document management and automatic FAQ generation using LangChain with Google Gemini.
 
-cd /path/to/your/project
+## Features
+- **Document Management**: Upload, update, delete, and list documents.
+- **FAQ Generation**: Automatically generate FAQs using Google Gemini when a document is uploaded.
+- **User Access**: Users can view available documents and FAQs.
+- **Admin Authentication**: Basic authentication is required for admin actions.
 
-2. Activate the Virtual Environment
-Activate the virtual environment where your dependencies are installed.
+## Tech Stack
+- **Django**: Web framework
+- **Django-Ninja**: API framework
+- **SQLite**: Database for simplicity
+- **LangChain**: Integrating AI-powered FAQ generation
+- **Google Gemini**: AI model for FAQ generation
 
-For macOS/Linux:
+---
 
-source venv/bin/activate
-For Windows:
+## Installation & Setup
 
-venv\Scripts\activate
-You should see the virtual environment's name in the terminal, e.g., (venv).
+### Prerequisites
+- Python 3.8+
+- Virtual environment (recommended)
+- API key for Google Gemini
 
-3. Install Required Dependencies
-If you haven't already installed the project dependencies, install them from the requirements.txt file.
+### Steps
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/Vinu-bhandary/docsfaqs.git
+   cd docsfaqs
+   ```
+2. **Create and Activate Virtual Environment**
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Run Migrations**
+   ```bash
+   python manage.py migrate
+   ```
+5. **Run Server**
+   ```bash
+   python manage.py runserver
+   ```
+6. **Access API Documentation**
+   - Open [http://127.0.0.1:8000/api/docs](http://127.0.0.1:8000/api/docs)
 
-pip install -r requirements.txt
-Ensure all required packages (like Django, Ninja, etc.) are installed.
+---
 
-4. Apply Migrations
-Run the following commands to apply migrations and set up the database:
+## API Endpoints
 
-python manage.py makemigrations
-python manage.py migrate
-This ensures your database schema matches your Django models.
+### **Admin Actions (Requires Authentication)**
 
-5. Create a Superuser (Optional)
-If you need admin access, create a superuser account:
+#### 1. Add Document
+- **Endpoint:** `POST /api/admin/add-document`
+- **Authentication:** Basic Auth
+- **Request Parameters:**
+  ```json
+  {
+    "title": "Sample Document",
+    "description": "Description of the document",
+    "content": "Actual document content"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "success": true,
+    "message": "Document added and FAQs generated."
+  }
+  ```
 
-python manage.py createsuperuser
-Follow the prompts to set up a username, email, and password.
+#### 2. Update Document
+- **Endpoint:** `PUT /api/admin/update-document/{doc_id}`
 
-6. Start the Django Development Server
-Run the development server using the following command:
+#### 3. Delete Document
+- **Endpoint:** `DELETE /api/admin/delete-document/{doc_id}`
 
-python manage.py runserver
-You should see output like:
+#### 4. List Documents
+- **Endpoint:** `GET /api/admin/list-documents`
 
-Starting development server at http://127.0.0.1:8000/
-7. Access the Project
-API Documentation: Navigate to the Ninja API documentation:
-http://127.0.0.1:8000/api/docs
-This is where you can test your API endpoints.
-Admin Panel (if enabled): Access it here:
-http://127.0.0.1:8000/admin
-8. Test API Endpoints
-You can test your API using:
+---
 
-Browser: Open http://127.0.0.1:8000/api/docs.
+### **User Actions**
+
+#### 1. View Documents
+- **Endpoint:** `GET /api/user/view-documents`
+
+#### 2. View FAQs for a Document
+- **Endpoint:** `GET /api/user/view-faqs/{doc_id}`
+
+---
+
+## Validation & Error Handling
+- **Validation:**
+  - Ensure valid document format.
+  - Prevent duplicate or empty FAQs.
+- **Error Handling:**
+  - Invalid document format
+  - Missing fields
+  - FAQ generation failures
+  - Unauthorized access
+
+---
+
+## Security Considerations
+- **Use HTTPS** for secure communication.
+- **Restrict Admin Access**: Only authenticated admins can modify documents.
+- **Enhance Authentication**: Consider JWT for improved security.
+
